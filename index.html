@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Foundations</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #1e6e47;
+    --green-mid: #2e9060;
+    --green-light: #e3f4eb;
+    --green-pale: #f0faf4;
+    --amber: #c97b1a;
+    --amber-light: #fdf3e3;
+    --text: #0f1f18;
+    --text-soft: #4a6158;
+    --border: #d8ece1;
+    --bg: #fff;
+    --bg-soft: #f5faf7;
+    --radius: 12px;
+    --shadow: 0 2px 16px rgba(30,110,71,0.08);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    height: 60px;
+  }
+  .nav-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-brand .logo {
+    width: 28px; height: 28px;
+    background: var(--green);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2px;
+    list-style: none;
+  }
+  .nav-links button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-soft);
+    padding: 7px 14px;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-links button:hover { background: var(--bg-soft); color: var(--text); }
+  .nav-links button.active { background: var(--green-light); color: var(--green); font-weight: 600; }
+
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 20px; height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: 0.2s;
+  }
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    z-index: 99;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu button {
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    font-weight: 500; color: var(--text-soft);
+    padding: 10px 12px; border-radius: 8px;
+    text-align: left; transition: background 0.15s, color 0.15s;
+  }
+  .mobile-menu button:hover { background: var(--bg-soft); color: var(--text); }
+  .mobile-menu button.active { background: var(--green-light); color: var(--green); }
+
+  /* ── PANELS ── */
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeUp 0.3s ease; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HERO ── */
+  .hero-bg {
+    width: 100%;
+    background: linear-gradient(160deg, #e8f7ee 0%, #f5faf7 50%, #fdfffe 100%);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg::before {
+    content: "";
+    position: absolute;
+    top: -80px; left: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(30,110,71,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-bg::after {
+    content: "";
+    position: absolute;
+    bottom: -100px; right: -80px;
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(30,110,71,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero {
+    padding: 80px 32px 72px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: var(--green-light);
+    padding: 4px 12px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+  .hero p {
+    font-size: 17px;
+    color: var(--text-soft);
+    font-weight: 300;
+    max-width: 500px;
+    margin: 0 auto 28px;
+    line-height: 1.7;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 99px;
+    padding: 12px 26px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none;
+  }
+  .hero-cta:hover { background: var(--green-mid); transform: translateY(-1px); }
+
+  /* ── PAGE HEADING ── */
+  .page-head {
+    padding: 52px 36px 0;
+  }
+  .page-head .tag {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--green); display: inline-block;
+    background: var(--green-light); padding: 3px 10px; border-radius: 99px;
+    margin-bottom: 12px;
+  }
+  .page-head h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 400;
+    color: var(--text); margin-bottom: 12px;
+  }
+  .page-head p {
+    color: var(--text-soft); font-weight: 300;
+    max-width: 580px; line-height: 1.75; font-size: 15px;
+  }
+
+  /* ── MAIN CONTENT WRAPPER ── */
+  .content {
+    padding: 36px 36px 88px;
+  }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--green-pale);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--green);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .callout strong { font-weight: 600; color: var(--green); }
+  .callout p { font-size: 14px; line-height: 1.8; color: var(--text-soft); }
+  .callout p + p { margin-top: 8px; }
+
+  /* callout amber variant */
+  .callout.amber {
+    background: var(--amber-light);
+    border-color: #e8c070;
+    border-left-color: var(--amber);
+  }
+  .callout.amber strong { color: var(--amber); }
+
+  /* ── STAT GRID ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    background: var(--bg-soft);
+    transition: box-shadow 0.2s;
+  }
+  .stat-card:hover { box-shadow: var(--shadow); }
+  .stat-card .num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-card .label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+  .stat-card .desc { font-size: 12px; color: var(--text-soft); line-height: 1.55; }
+
+  /* ── MODULE CARDS ── */
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .module-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    background: var(--bg);
+  }
+  .module-card:hover { border-color: var(--green); box-shadow: var(--shadow); transform: translateY(-2px); }
+  .module-card .icon { font-size: 1.5rem; margin-bottom: 12px; }
+  .module-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 7px; }
+  .module-card p { font-size: 12.5px; color: var(--text-soft); line-height: 1.55; }
+  .module-card .go { font-size: 12px; color: var(--green); font-weight: 600; margin-top: 12px; display: block; }
+
+  /* ── HOW LIST ── */
+  .how-list { display: flex; flex-direction: column; gap: 12px; }
+  .how-item { display: flex; gap: 14px; align-items: flex-start; }
+  .how-n {
+    min-width: 24px; height: 24px;
+    background: var(--green); color: #fff;
+    border-radius: 50%; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px; flex-shrink: 0;
+  }
+  .how-item p { font-size: 14px; color: var(--text-soft); line-height: 1.65; }
+  .how-item p strong { color: var(--text); font-weight: 600; }
+
+  /* ── SECTION TITLE ── */
+  .sec-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  /* ── WIDGET ── */
+  .widget {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 26px;
+    margin-bottom: 28px;
+    background: var(--bg);
+    box-shadow: var(--shadow);
+  }
+  .widget h3 { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+  .widget .sub { font-size: 13px; color: var(--text-soft); margin-bottom: 22px; line-height: 1.6; }
+
+  /* fields */
+  .fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .field label { display: block; font-size: 11px; font-weight: 600; color: var(--text-soft); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .field input, .field select {
+    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--text); background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 12px; outline: none; transition: border-color 0.15s, background 0.15s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px rgba(30,110,71,0.07); }
+
+  /* sliders */
+  .slider-list { display: flex; flex-direction: column; gap: 18px; margin-bottom: 20px; }
+  .slider-row { display: grid; grid-template-columns: 100px 1fr 48px; gap: 12px; align-items: center; }
+  .slider-row label { font-size: 13px; font-weight: 500; color: var(--text); }
+  input[type=range] {
+    -webkit-appearance: none; width: 100%; height: 5px;
+    background: var(--border); border-radius: 99px; outline: none; cursor: pointer;
+    transition: background 0.2s;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px;
+    border-radius: 50%; background: var(--green); cursor: pointer;
+    box-shadow: 0 1px 6px rgba(30,110,71,0.35);
+    transition: transform 0.15s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+  .pct-val { font-size: 13px; font-weight: 700; color: var(--green); text-align: right; }
+
+  /* result tiles */
+  .result-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .rtile { border-radius: 10px; padding: 16px 14px; text-align: center; }
+  .rtile.needs { background: #edf7f1; border: 1px solid #c5e8d4; }
+  .rtile.wants { background: #fef9ec; border: 1px solid #e8d88c; }
+  .rtile.savings { background: #eef4fb; border: 1px solid #b8d3ee; }
+  .rtile .rcat { font-size: 11px; font-weight: 600; color: var(--text-soft); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .rtile .ramt { font-size: 1.4rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+  .rtile .rpct { font-size: 11px; color: var(--text-soft); margin-top: 3px; }
+
+  .warn { background: #fffbec; border: 1px solid #e5d060; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #6b5200; margin-top: 12px; display: none; }
+
+  /* CI results */
+  .ci-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 20px; }
+  .ctile { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 10px; padding: 16px 14px; text-align: center; }
+  .ctile .clabel { font-size: 11px; font-weight: 600; color: var(--text-soft); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .ctile .cval { font-size: 1.1rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+  .ctile.big { background: var(--green-pale); border-color: var(--border); }
+  .ctile.big .cval { font-size: 1.4rem; color: var(--green); }
+
+  /* bar chart */
+  .chart { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 10px; padding: 16px 14px 10px; overflow-x: auto; }
+  .bars { display: flex; align-items: flex-end; gap: 7px; height: 130px; min-width: 300px; }
+  .bcol { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+  .b-i { width: 100%; background: var(--green); border-radius: 4px 4px 0 0; transition: height 0.45s cubic-bezier(.4,0,.2,1); }
+  .b-p { width: 100%; background: #a8d5bc; transition: height 0.45s cubic-bezier(.4,0,.2,1); }
+  .b-yr { font-size: 9.5px; color: var(--text-soft); margin-top: 5px; }
+  .clegend { display: flex; gap: 18px; margin-top: 12px; flex-wrap: wrap; }
+  .cleg { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-soft); }
+  .ldot { width: 10px; height: 10px; border-radius: 3px; }
+
+  /* goal output */
+  .goal-out { background: var(--green-pale); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .goal-out .gomain { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+  .goal-out .godetail { font-size: 13px; color: var(--text-soft); line-height: 1.7; }
+  .prog-wrap { margin-top: 14px; }
+  .prog-label { font-size: 11px; color: var(--text-soft); margin-bottom: 6px; font-weight: 600; }
+  .prog-outer { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .prog-inner { height: 100%; background: var(--green); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+
+  /* prose */
+  .prose { font-size: 14.5px; color: var(--text-soft); line-height: 1.8; }
+  .prose p { margin-bottom: 14px; }
+  .prose p strong { color: var(--text); font-weight: 600; }
+  .prose h3 { font-size: 14px; font-weight: 700; color: var(--text); margin: 22px 0 8px; }
+
+  /* ── TIPS GRID (new) ── */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .tip-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    background: var(--bg-soft);
+  }
+  .tip-card .tip-icon { font-size: 1.3rem; margin-bottom: 10px; }
+  .tip-card h4 { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .tip-card p { font-size: 12.5px; color: var(--text-soft); line-height: 1.6; }
+
+  /* ── DRAG DROP (new) ── */
+  .dnd-wrap { margin-bottom: 28px; }
+  .dnd-instruction { font-size: 13px; color: var(--text-soft); margin-bottom: 16px; }
+  .dnd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .dnd-zone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    min-height: 180px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .dnd-zone.needs-zone { background: #f5fdf8; }
+  .dnd-zone.wants-zone { background: #fdfcf4; }
+  .dnd-zone.drag-over { border-color: var(--green); background: var(--green-pale); }
+  .dnd-zone h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+  .dnd-zone.needs-zone h4 { color: var(--green); }
+  .dnd-zone.wants-zone h4 { color: var(--amber); }
+  .dnd-pool { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dnd-chip {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 99px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: grab;
+    user-select: none;
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  .dnd-chip:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: translateY(-1px); }
+  .dnd-chip.dragging { opacity: 0.5; }
+  .dnd-chip.correct { background: #edf7f1; border-color: var(--green); color: var(--green); }
+  .dnd-chip.incorrect { background: #faeaea; border-color: #d06060; color: #7a1a1a; }
+  .dnd-feedback { margin-top: 12px; font-size: 13px; }
+  .dnd-check {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green); color: #fff; border: none; border-radius: 8px;
+    padding: 9px 20px; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    margin-top: 14px; transition: background 0.15s;
+  }
+  .dnd-check:hover { background: var(--green-mid); }
+  .dnd-reset {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: none; color: var(--text-soft); border: 1px solid var(--border);
+    border-radius: 8px; padding: 9px 20px; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; cursor: pointer; margin-top: 14px;
+    margin-left: 8px; transition: background 0.15s;
+  }
+  .dnd-reset:hover { background: var(--bg-soft); }
+
+  /* items pool area */
+  .items-pool-wrap { margin-bottom: 16px; }
+  .items-pool-wrap label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-soft); display: block; margin-bottom: 8px; }
+
+  /* ── QUIZ ── */
+  .qwrap { }
+  .qprog-outer { height: 4px; background: var(--border); border-radius: 99px; margin-bottom: 28px; overflow: hidden; }
+  .qprog-inner { height: 100%; background: var(--green); border-radius: 99px; transition: width 0.4s ease; }
+  .qcard { border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; background: var(--bg); box-shadow: var(--shadow); }
+  .qnum { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+  .qscenario { background: var(--green-pale); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; font-size: 13px; color: var(--text-soft); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+  .qtext { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.5; margin-bottom: 20px; }
+  .qopts { display: flex; flex-direction: column; gap: 9px; }
+  .qopt {
+    background: var(--bg-soft); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 13px 18px; font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px; color: var(--text); text-align: left; cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    line-height: 1.45;
+  }
+  .qopt:hover:not(:disabled) { background: var(--green-light); border-color: var(--green); transform: translateX(4px); }
+  .qopt.correct { background: #eaf5ef; border-color: var(--green); font-weight: 500; }
+  .qopt.incorrect { background: #faeaea; border-color: #d06060; color: #5a1a1a; }
+  .qfb { margin-top: 18px; padding: 14px 18px; border-radius: 10px; font-size: 13.5px; line-height: 1.65; display: none; }
+  .qfb.correct { background: #eaf5ef; color: #1a4a2e; border-left: 3px solid var(--green); display: block; }
+  .qfb.incorrect { background: #faeaea; color: #5a1a1a; border-left: 3px solid #d06060; display: block; }
+  .qnext {
+    background: var(--green); color: #fff; border: none; border-radius: 8px;
+    padding: 11px 24px; font-family: 'DM Sans', sans-serif; font-size: 13.5px;
+    font-weight: 600; cursor: pointer; margin-top: 18px; display: none;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .qnext:hover { background: var(--green-mid); transform: translateY(-1px); }
+  .qresult { border: 1px solid var(--border); border-radius: var(--radius); padding: 52px 28px; text-align: center; display: none; background: var(--bg-soft); }
+  .qresult .bigscore { font-family: 'DM Serif Display', serif; font-size: 4rem; color: var(--green); line-height: 1; margin-bottom: 4px; }
+  .qresult .scorelabel { font-size: 13px; color: var(--text-soft); margin-bottom: 20px; }
+  .qresult p { font-size: 14.5px; color: var(--text-soft); max-width: 380px; margin: 0 auto 28px; line-height: 1.7; }
+  .btn-restart { background: var(--green); color: #fff; border: none; border-radius: 8px; padding: 11px 26px; font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+  .btn-restart:hover { background: var(--green-mid); }
+
+  /* footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 22px 36px;
+    font-size: 12px;
+    color: var(--text-soft);
+    text-align: center;
+    background: var(--bg-soft);
+  }
+  footer a { color: var(--text-soft); }
+
+  /* ── MODERN FINANCIAL TOOLS SECTION ── */
+  .tools-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .tool-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 18px;
+    background: var(--bg);
+  }
+  .tool-card .tool-icon { font-size: 1.4rem; margin-bottom: 10px; }
+  .tool-card h4 { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .tool-card p { font-size: 12.5px; color: var(--text-soft); line-height: 1.6; }
+  .tool-badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 2px 8px; border-radius: 99px;
+    margin-bottom: 8px;
+  }
+  .tool-badge.safe { background: var(--green-light); color: var(--green); }
+  .tool-badge.caution { background: #fef3e2; color: #b06000; }
+  .tool-badge.risky { background: #faeaea; color: #a01010; }
+
+  /* ── SKIP NAV ── */
+  .skip-nav {
+    position: absolute;
+    top: -100px;
+    left: 12px;
+    background: var(--green);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 0 0 8px 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    z-index: 999;
+    transition: top 0.2s;
+  }
+  .skip-nav:focus { top: 0; }
+
+  /* ── LEARNING OUTCOMES BOX ── */
+  .outcomes-box {
+    background: #d2d2d2;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--green-mid);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin-bottom: 28px;
+  }
+  .outcomes-box .ob-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--green); margin-bottom: 10px;
+  }
+  .outcomes-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 7px; }
+  .outcomes-box li { font-size: 13.5px; color: var(--text-soft); display: flex; gap: 9px; line-height: 1.55; }
+  .outcomes-box li::before { content: "✓"; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  /* ── DUAL-CODING DIAGRAMS ── */
+  .diagram-wrap {
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .diagram-wrap svg { max-width: 100%; height: auto; }
+  .diagram-caption {
+    font-size: 12px; color: var(--text-soft); margin-top: 8px; font-style: italic;
+  }
+
+  /* ── QUIZ FRAMING ── */
+  .quiz-intro {
+    background: var(--green-pale);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .quiz-intro .qi-icon { font-size: 2rem; margin-bottom: 10px; }
+  .quiz-intro h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .quiz-intro p { font-size: 13.5px; color: var(--text-soft); line-height: 1.7; max-width: 420px; margin: 0 auto; }
+
+  /* ── DND KEYBOARD FALLBACK ── */
+  .dnd-select-wrap { margin-top: 16px; }
+  .dnd-select-wrap summary {
+    font-size: 12.5px; color: var(--text-soft); cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 0; font-weight: 500;
+  }
+  .dnd-select-wrap summary:hover { color: var(--text); }
+  .dnd-select-inner { padding-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .dnd-select-row { display: grid; grid-template-columns: 1fr 180px; gap: 10px; align-items: center; }
+  .dnd-select-row label { font-size: 13px; color: var(--text); }
+  .dnd-select-row select {
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    color: var(--text); background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 7px 10px; outline: none;
+  }
+  .dnd-select-row select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(30,110,71,0.07); }
+  @media (max-width: 480px) { .dnd-select-row { grid-template-columns: 1fr; } }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero { padding: 52px 20px 44px; }
+    .page-head { padding: 40px 20px 0; }
+    .content { padding: 28px 20px 68px; }
+    .stat-grid, .module-grid { grid-template-columns: 1fr; }
+    .result-tiles, .ci-tiles { grid-template-columns: 1fr; }
+    .slider-row { grid-template-columns: 80px 1fr 40px; gap: 8px; }
+    .dnd-grid { grid-template-columns: 1fr; }
+    footer { padding: 18px 20px; }
+  }
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-nav">Skip to main content</a>
+
+<nav>
+  <div class="nav-brand">
+    <div class="logo" aria-hidden="true">💰</div>
+    Financial Foundations
+  </div>
+  <ul class="nav-links">
+    <li><button class="active" data-p="overview">Overview</button></li>
+    <li><button data-p="budgeting">Budgeting</button></li>
+    <li><button data-p="compound">Compound Interest</button></li>
+    <li><button data-p="savings">Savings Goals</button></li>
+    <li><button data-p="tools">Modern Tools</button></li>
+    <li><button data-p="quiz">Quiz</button></li>
+  </ul>
+  <button class="hamburger" id="hbg" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mmenu">
+  <button class="active" data-pm="overview">Overview</button>
+  <button data-pm="budgeting">Budgeting</button>
+  <button data-pm="compound">Compound Interest</button>
+  <button data-pm="savings">Savings Goals</button>
+  <button data-pm="tools">Modern Tools</button>
+  <button data-pm="quiz">Quiz</button>
+</div>
+
+<!-- OVERVIEW -->
+<div class="panel active" id="panel-overview" role="main" id="main-content">
+  <section class="hero-bg">
+    <div class="hero">
+      <span class="tag">Open Educational Resource</span>
+      <h1>Financial Foundations for Beginners</h1>
+      <p>A practical toolkit to help high school students understand budgeting, compound interest, and savings</p>
+      <button class="hero-cta" onclick="go('budgeting')">Start Learning →</button>
+    </div>
+  </section>
+  <div class="content">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="num">×15</div>
+        <div class="label">Power of saving early</div>
+        <div class="desc">$1 saved at 16 at 7% return becomes ~$15 by age 65 (with no extra effort).</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">50%</div>
+        <div class="label">Teens with no savings plan</div>
+        <div class="desc">Most young earners don't have a strategy for their money. This toolkit changes that.</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">4</div>
+        <div class="label">Core topics inside</div>
+        <div class="desc">Budgeting, compound interest, savings goals, and modern financial tools.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>Why does this matter now?</strong></p>
+      <p>The habits you build in your teens have an outsized impact on your financial future. You don't need a lot of money to start, you just need a plan. Even $20/month saved at 16 can grow to over $7,000 by age 30.</p>
+    </div>
+
+    <div class="sec-title">What's inside</div>
+    <div class="module-grid">
+      <div class="module-card" onclick="go('budgeting')">
+        <div class="icon" aria-hidden="true">📊</div>
+        <h3>Budgeting</h3>
+        <p>Learn the 50/30/20 rule, sort needs from wants with an interactive activity, and use the calculator with your own income.</p>
+        <span class="go">Open →</span>
+      </div>
+      <div class="module-card" onclick="go('compound')">
+        <div class="icon" aria-hidden="true">📈</div>
+        <h3>Compound Interest</h3>
+        <p>See how savings grow over time and why starting even one year earlier makes a dramatic difference.</p>
+        <span class="go">Open →</span>
+      </div>
+      <div class="module-card" onclick="go('savings')">
+        <div class="icon" aria-hidden="true">🎯</div>
+        <h3>Savings Goals</h3>
+        <p>Set a real target and get practical tips to actually make saving stick</p>
+        <span class="go">Open →</span>
+      </div>
+      <div class="module-card" onclick="go('tools')">
+        <div class="icon" aria-hidden="true">🔧</div>
+        <h3>Modern Tools</h3>
+        <p>High-interest savings accounts, crypto, investing apps: what's worth your attention and what to be cautious of.</p>
+        <span class="go">Open →</span>
+      </div>
+      <div class="module-card" onclick="go('quiz')">
+        <div class="icon" aria-hidden="true">✅</div>
+        <h3>Quiz</h3>
+        <p>Test what you've learned through real-life scenarios with instant feedback on every answer.</p>
+        <span class="go">Take the Quiz →</span>
+      </div>
+    </div>
+
+    <div class="sec-title" style="margin-top:32px;">How to use this</div>
+    <div class="how-list">
+      <div class="how-item"><div class="how-n">1</div><p>Navigate the tabs in <strong>any order</strong></p></div>
+      <div class="how-item"><div class="how-n">2</div><p><strong>Enter your own numbers</strong> in every interactive tool to make it personal.</p></div>
+      <div class="how-item"><div class="how-n">3</div><p>Take the <strong>quiz</strong> at any point to check your understanding through real-life scenarios.</p></div>
+      <div class="how-item"><div class="how-n">4</div><p>Come back anytime: this resource is <strong>free and open</strong> for you to keep.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- BUDGETING -->
+<div class="panel" id="panel-budgeting">
+  <div class="page-head">
+    <span class="tag">Module 1</span>
+    <h2>Budgeting</h2>
+    <p>A budget is a plan for your money. It tells your money where to go instead of wondering where it went. The 50/30/20 rule is one of the simplest frameworks to get started.</p>
+  </div>
+  <div class="content">
+
+    <div class="outcomes-box" aria-label="Learning outcomes for this module">
+      <div class="ob-title">🎯 By the end of this module, you will be able to:</div>
+      <ul>
+        <li>Apply the 50/30/20 rule to divide any income into needs, wants, and savings</li>
+        <li>Distinguish between needs and wants using real-world examples</li>
+        <li>Build a personal monthly budget using the interactive calculator</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <p><strong>The 50/30/20 Rule</strong></p>
+      <p><strong>50% Needs</strong>: essentials like food, transport, your phone plan.<br>
+      <strong>30% Wants</strong>: entertainment, dining out, clothing, hobbies.<br>
+      <strong>20% Savings</strong>: money you set aside to grow and protect your future.</p>
+    </div>
+
+    <div class="diagram-wrap" aria-label="Pie chart showing 50/30/20 budget breakdown">
+      <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="max-width:340px;" role="img" aria-label="Pie chart: 50% Needs, 30% Wants, 20% Savings">
+        <!-- Pie: Needs 50% = 180deg, Wants 30% = 108deg, Savings 20% = 72deg -->
+        <!-- Starting from top (270deg), going clockwise -->
+        <!-- Needs: 270 -> 90 (180deg) -->
+        <circle cx="110" cy="100" r="75" fill="#e3f4eb"/>
+        <path d="M110,100 L110,25 A75,75 0 0,1 185,100 Z" fill="#2e9060" opacity="0.85"/>
+        <path d="M110,100 L185,100 A75,75 0 0,1 110,175 Z" fill="#2e9060" opacity="0.85"/>
+        <!-- Wants: 90 -> 198deg -->
+        <path d="M110,100 L110,175 A75,75 0 0,1 39.6,137.5 Z" fill="#c97b1a" opacity="0.8"/>
+        <path d="M110,100 L39.6,137.5 A75,75 0 0,1 61.3,36.2 Z" fill="#c97b1a" opacity="0.8"/>
+        <!-- Savings: 198 -> 270deg -->
+        <path d="M110,100 L61.3,36.2 A75,75 0 0,1 110,25 Z" fill="#4a90d9" opacity="0.8"/>
+        <!-- Legend -->
+        <rect x="200" y="52" width="12" height="12" rx="3" fill="#2e9060" opacity="0.85"/>
+        <text x="218" y="63" font-family="DM Sans, sans-serif" font-size="13" fill="#0f1f18" font-weight="600">50% Needs</text>
+        <rect x="200" y="78" width="12" height="12" rx="3" fill="#c97b1a" opacity="0.8"/>
+        <text x="218" y="89" font-family="DM Sans, sans-serif" font-size="13" fill="#0f1f18" font-weight="600">30% Wants</text>
+        <rect x="200" y="104" width="12" height="12" rx="3" fill="#4a90d9" opacity="0.8"/>
+        <text x="218" y="115" font-family="DM Sans, sans-serif" font-size="13" fill="#0f1f18" font-weight="600">20% Savings</text>
+        <!-- Centre label -->
+        <text x="110" y="96" font-family="DM Serif Display, serif" font-size="13" fill="#0f1f18" text-anchor="middle" font-weight="400">Your</text>
+        <text x="110" y="112" font-family="DM Serif Display, serif" font-size="13" fill="#0f1f18" text-anchor="middle">Budget</text>
+      </svg>
+      <p class="diagram-caption">The 50/30/20 split: a simple starting point for any income level.</p>
+    </div>
+
+    <div class="callout amber" style="margin-bottom:28px;">
+      <p><strong>Irregular income?</strong> Not everyone earns a steady paycheck. If your income changes month to month (from chores, gig work, or seasonal jobs), try a percentage-based approach instead of fixed amounts. Saving 20% of whatever you earn that month still builds the habit, even if the number varies.</p>
+    </div>
+
+    <div class="widget">
+      <h3>Budget Calculator</h3>
+      <p class="sub">Enter your monthly income and adjust the sliders to split it across categories.</p>
+      <div class="fields" style="grid-template-columns:1fr;max-width:240px;">
+        <div class="field">
+          <label>Monthly Income ($)</label>
+          <input type="number" id="b-income" value="500" min="0" oninput="updateBudget()">
+        </div>
+      </div>
+      <div class="slider-list">
+        <div class="slider-row">
+          <label>🏠 Needs</label>
+          <input type="range" id="s-needs" min="0" max="100" value="50" oninput="syncB()">
+          <span class="pct-val" id="p-needs">50%</span>
+        </div>
+        <div class="slider-row">
+          <label>🎮 Wants</label>
+          <input type="range" id="s-wants" min="0" max="100" value="30" oninput="syncB()">
+          <span class="pct-val" id="p-wants">30%</span>
+        </div>
+        <div class="slider-row">
+          <label>💰 Savings</label>
+          <input type="range" id="s-savings" min="0" max="100" value="20" oninput="syncB()">
+          <span class="pct-val" id="p-savings">20%</span>
+        </div>
+      </div>
+      <div class="result-tiles">
+        <div class="rtile needs"><div class="rcat">Needs</div><div class="ramt" id="r-needs">$250</div><div class="rpct" id="rp-needs">50%</div></div>
+        <div class="rtile wants"><div class="rcat">Wants</div><div class="ramt" id="r-wants">$150</div><div class="rpct" id="rp-wants">30%</div></div>
+        <div class="rtile savings"><div class="rcat">Savings</div><div class="ramt" id="r-savings">$100</div><div class="rpct" id="rp-savings">20%</div></div>
+      </div>
+      <div class="warn" id="b-warn"></div>
+    </div>
+
+    <div class="sec-title">Needs vs. Wants — Sort it out</div>
+    <p class="dnd-instruction" style="font-size:14px;color:var(--text-soft);margin-bottom:16px;">The most important budgeting skill isn't maths. It's <strong style="color:var(--text)">honest self-awareness</strong>. Drag each item into the correct category below, then check your answers.</p>
+
+    <div class="dnd-wrap">
+      <div class="items-pool-wrap">
+        <label>Items to sort</label>
+        <div class="dnd-pool" id="dnd-pool"></div>
+      </div>
+      <div class="dnd-grid">
+        <div class="dnd-zone needs-zone" id="zone-needs" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,'needs')">
+          <h4>✅ Needs</h4>
+          <div class="dnd-pool" id="pool-needs"></div>
+        </div>
+        <div class="dnd-zone wants-zone" id="zone-wants" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,'wants')">
+          <h4>🎮 Wants</h4>
+          <div class="dnd-pool" id="pool-wants"></div>
+        </div>
+      </div>
+      <div class="dnd-feedback" id="dnd-fb"></div>
+      <button class="dnd-check" onclick="checkDnd()">Check Answers</button>
+      <button class="dnd-reset" onclick="resetDnd()">↺ Reset</button>
+
+      <!-- Keyboard / touch fallback -->
+      <details class="dnd-select-wrap" id="dnd-keyboard-wrap">
+        <summary aria-expanded="false">⌨️ Can't drag? Use the dropdown version instead</summary>
+        <div class="dnd-select-inner" id="dnd-selects"></div>
+        <button class="dnd-check" style="margin-top:14px;" onclick="checkDndSelect()">Check Answers</button>
+      </details>
+    </div>
+
+    <div class="sec-title" style="margin-top:8px;">Why it matters</div>
+    <div class="prose">
+      <p><strong>Needs</strong> are non-negotiables: food, transport to school or work, essential utilities. Without them, your daily life is seriously impacted.</p>
+      <p><strong>Wants</strong> are extras that make life enjoyable but are optional. There's nothing wrong with wants. The key is funding needs and savings first, then enjoying what's left.</p>
+      <p>Budgeting isn't about deprivation. It's about being <strong>intentional</strong>, so that when you do spend on wants, you're choosing to, not just drifting.</p>
+    </div>
+  </div>
+</div>
+
+<!-- COMPOUND INTEREST -->
+<div class="panel" id="panel-compound">
+  <div class="page-head">
+    <span class="tag">Module 2</span>
+    <h2>Compound Interest</h2>
+    <p>When your savings earn interest, that interest earns its own interest. This creates a snowball effect that grows faster the longer it runs.</p>
+  </div>
+  <div class="content">
+
+    <div class="outcomes-box" aria-label="Learning outcomes for this module">
+      <div class="ob-title">🎯 By the end of this module, you will be able to:</div>
+      <ul>
+        <li>Explain how compound interest differs from simple interest in your own words</li>
+        <li>Describe why starting to save earlier produces dramatically more growth</li>
+        <li>Use the calculator to estimate real savings growth with your own numbers</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <p><strong>The simple idea:</strong> You earn interest on your money. Then you earn interest on that interest. Then on that. Over decades, this becomes extraordinary.</p>
+      <p><strong>The formula:</strong> A = P × (1 + r/n)<sup>n×t</sup> + future value of monthly contributions. You don't need to memorise this — the calculator below handles the maths. The key idea: <strong>time is your most valuable input.</strong></p>
+    </div>
+
+    <div class="diagram-wrap" aria-label="Snowball diagram showing compound interest growing over time">
+      <svg viewBox="0 0 480 150" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;" role="img" aria-label="Three circles growing left to right, labelled Year 1, Year 10, Year 30, illustrating how savings snowball with compound interest">
+        <!-- Snowball growth diagram -->
+        <defs>
+          <radialGradient id="sg1" cx="50%" cy="40%"><stop offset="0%" stop-color="#a8d5bc"/><stop offset="100%" stop-color="#2e9060"/></radialGradient>
+          <radialGradient id="sg2" cx="50%" cy="40%"><stop offset="0%" stop-color="#8ecbaa"/><stop offset="100%" stop-color="#1e6e47"/></radialGradient>
+          <radialGradient id="sg3" cx="50%" cy="40%"><stop offset="0%" stop-color="#6dbf96"/><stop offset="100%" stop-color="#155c38"/></radialGradient>
+        </defs>
+        <!-- Arrow line -->
+        <line x1="40" y1="110" x2="450" y2="110" stroke="#d8ece1" stroke-width="2"/>
+        <polygon points="450,106 460,110 450,114" fill="#d8ece1"/>
+        <text x="462" y="114" font-family="DM Sans,sans-serif" font-size="11" fill="#4a6158">Time</text>
+        <!-- Ball 1 -->
+        <circle cx="80" cy="90" r="22" fill="url(#sg1)" opacity="0.9"/>
+        <text x="80" y="94" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#fff" font-weight="700">$500</text>
+        <text x="80" y="130" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#4a6158">Year 1</text>
+        <!-- Ball 2 -->
+        <circle cx="240" cy="78" r="36" fill="url(#sg2)" opacity="0.9"/>
+        <text x="240" y="82" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#fff" font-weight="700">$1,200</text>
+        <text x="240" y="130" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#4a6158">Year 10</text>
+        <!-- Ball 3 -->
+        <circle cx="400" cy="58" r="58" fill="url(#sg3)" opacity="0.9"/>
+        <text x="400" y="55" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#fff" font-weight="700">$5,000+</text>
+        <text x="400" y="68" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(255,255,255,0.8)">interest on interest</text>
+        <text x="400" y="130" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#4a6158">Year 30</text>
+      </svg>
+      <p class="diagram-caption">Savings snowball: each year, interest is earned on both your deposits <em>and</em> all previously earned interest.</p>
+    </div>
+
+    <div class="widget">
+      <h3>Compound Interest Calculator</h3>
+      <p class="sub">Adjust the inputs to see how your savings grow over time.</p>
+      <div class="fields">
+        <div class="field"><label>Starting Amount ($)</label><input type="number" id="ci-p" value="500" min="0" oninput="updateCI()"></div>
+        <div class="field"><label>Monthly Contribution ($)</label><input type="number" id="ci-m" value="50" min="0" oninput="updateCI()"></div>
+        <div class="field"><label>Annual Rate (%)</label><input type="number" id="ci-r" value="5" min="0" max="100" step="0.1" oninput="updateCI()"></div>
+        <div class="field"><label>Years</label><input type="number" id="ci-t" value="10" min="1" max="50" oninput="updateCI()"></div>
+        <div class="field"><label>Compounding</label><select id="ci-n" onchange="updateCI()"><option value="12">Monthly</option><option value="4">Quarterly</option><option value="1">Annually</option></select></div>
+      </div>
+      <div class="ci-tiles">
+        <div class="ctile"><div class="clabel">Total Deposited</div><div class="cval" id="ci-dep">$6,500</div></div>
+        <div class="ctile"><div class="clabel">Interest Earned</div><div class="cval" id="ci-int">$2,394</div></div>
+        <div class="ctile big"><div class="clabel">Final Balance</div><div class="cval" id="ci-fin">$8,894</div></div>
+      </div>
+      <div class="chart">
+        <div class="bars" id="ci-chart"></div>
+        <div class="clegend">
+          <div class="cleg"><div class="ldot" style="background:#a8d5bc"></div> Deposited</div>
+          <div class="cleg"><div class="ldot" style="background:var(--green)"></div> Interest Earned</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">Why starting early matters so much</div>
+    <div class="prose">
+      <p>If Emma saves <strong>$100/month from age 16</strong> at 6% annual return, she'll have around <strong>$200,000 by age 65</strong>. If Jake starts the same habit at age 26 (just 10 years later ) he'll have roughly <strong>$100,000</strong>. Same effort, half the outcome.</p>
+      <p>The difference is the <strong>time compound interest had to work</strong>. Those extra 10 years give interest time to compound on itself exponentially.</p>
+      <p>It works the other way too. Credit card debt at 20% interest grows the same way <em>against</em> you. Understanding this dynamic is just as important as knowing how to grow savings.</p>
+    </div>
+    <br>
+      <div class="sec-title">A is short video about Compound Interest</div>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/wf91rEGw88Q?si=5GIb67op3zXL3OH4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" REFERRERPOLICY="strict-origin-when-cross-origin" allowfullscreen></iframe>  
+  </div>
+</div>
+
+<!-- SAVINGS GOALS -->
+<div class="panel" id="panel-savings">
+  <div class="page-head">
+    <span class="tag">Module 3</span>
+    <h2>Savings Goals</h2>
+    <p>A savings goal turns a wish into a plan. Set a specific target, a deadline, and a monthly amount, giving your money a clear purpose.</p>
+  </div>
+  <div class="content">
+
+    <div class="outcomes-box" aria-label="Learning outcomes for this module">
+      <div class="ob-title">🎯 By the end of this module, you will be able to:</div>
+      <ul>
+        <li>Write a SMART savings goal with a specific target and deadline</li>
+        <li>Calculate how much to save per month to reach any goal on time</li>
+        <li>Identify at least two habits that support consistent saving</li>
+      </ul>
+    </div>
+
+    <div class="callout"> Specific · Measurable · Achievable · Relevant · Time-bound</p>
+      <p>Example: "Save $800 for a laptop in 8 months" is a SMART goal. "Save more money" is not.</p>
+    </div>
+
+    <div class="widget">
+      <h3>Savings Goal Builder</h3>
+      <p class="sub">Enter your goal details to find out how much to save each month.</p>
+      <div class="fields">
+        <div class="field"><label>Goal Name</label><input type="text" id="g-name" placeholder="e.g. New laptop" oninput="updateGoal()"></div>
+        <div class="field"><label>Target Amount ($)</label><input type="number" id="g-target" value="800" min="0" oninput="updateGoal()"></div>
+        <div class="field"><label>Already Saved ($)</label><input type="number" id="g-saved" value="0" min="0" oninput="updateGoal()"></div>
+        <div class="field"><label>Months to Reach Goal</label><input type="number" id="g-months" value="8" min="1" oninput="updateGoal()"></div>
+      </div>
+      <div class="goal-out">
+        <div class="gomain" id="g-main">—</div>
+        <div class="godetail" id="g-detail"></div>
+        <div class="prog-wrap">
+          <div class="prog-label" id="g-prog-label"></div>
+          <div class="prog-outer"><div class="prog-inner" id="g-prog" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">Tips that actually work</div>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-icon">💸</div>
+        <h4>Pay yourself first</h4>
+        <p>When you get paid, move your savings amount <strong>immediately</strong>, before spending anything else. Remove the temptation to spend first.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🛡️</div>
+        <h4>Build an emergency cushion</h4>
+        <p>Before saving for fun goals, aim for a small cushion of <strong>$200–$500</strong> to protect yourself from unexpected costs without going into debt.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">⏱️</div>
+        <h4>Use the 24-hour rule</h4>
+        <p>Before any impulse purchase over $20, wait 24 hours. You'll often find you don't actually want it and that money stays in your goal fund.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📝</div>
+        <h4>Track spending for one month</h4>
+        <p>Log every purchase for 30 days. Most people are surprised how much <strong>small, frequent purchases</strong> (coffees, snacks, subscriptions). They all add up.</p>
+      </div>
+    </div>
+
+    <div class="sec-title">Short-term vs. Long-term goals</div>
+    <div class="prose">
+      <p>Not all goals are equal: <br><strong>- Short-term goals</strong> (weeks to months) keep you motivated and build the saving habit. <br><strong>- Long-term goals</strong> (years) are where compound interest and consistent effort really pay off.</p>
+      <p><strong>Examples of short-term goals:</strong> a new game ($60), a gift for someone ($40), a pair of headphones ($120). <br><strong>Examples of long-term goals:</strong> a car ($5,000+), a gap year travel fund ($3,000), an emergency fund ($1,000). <br><br>Having both types keeps you motivated in the short run while building towards something meaningful in the long run.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODERN TOOLS  -->
+<div class="panel" id="panel-tools">
+  <div class="page-head">
+    <span class="tag">Module 4</span>
+    <h2>Modern Financial Tools</h2>
+    <p>From high-interest savings accounts to crypto. Here's a practical, balanced overview of the financial tools you're hearing about, and what's worth your attention right now.</p>
+  </div>
+  <div class="content">
+
+    <div class="outcomes-box" aria-label="Learning outcomes for this module">
+      <div class="ob-title">🎯 By the end of this module, you will be able to:</div>
+      <ul>
+        <li>Compare financial tools by risk level and suitability for beginners</li>
+        <li>Explain why building a financial foundation comes before higher-risk tools</li>
+        <li>Identify at least one low-risk tool appropriate for your current situation</li>
+      </ul>
+    </div>
+
+    <div class="callout amber"> Before making any financial decisions involving real money, talk to a trusted adult or a licensed financial advisor.</p>
+    </div>
+
+    <div class="sec-title">Tools by risk level</div>
+    <div class="tools-cards">
+      <div class="tool-card">
+        <div class="tool-badge safe">Low Risk</div>
+        <div class="tool-icon">🏦</div>
+        <h4>High-Interest Savings Accounts (HISA)</h4>
+        <p>A regular savings account that pays a higher interest rate than standard accounts (often 3–5)%. Your money is safe and insured. A great home for your emergency fund or short-term goals. <strong>Best for: beginners.</strong></p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-badge safe">Low Risk</div>
+        <div class="tool-icon">📱</div>
+        <h4>Savings &amp; Budgeting Apps</h4>
+        <p>Apps like Mint, YNAB, or your bank's own app help you track spending and set goals automatically. Many are free. <strong>Best for: building habits without much effort.</strong></p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-badge caution">Medium Risk</div>
+        <div class="tool-icon">📊</div>
+        <h4>Index Funds &amp; ETFs</h4>
+        <p>Investing apps like Wealthsimple or Fidelity let you buy small pieces of hundreds of companies at once. Value goes up and down, but historically grows over long periods. <strong>Best for: long-term goals (5+ years away).</strong></p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-badge risky">High Risk</div>
+        <div class="tool-icon">₿</div>
+        <h4>Cryptocurrency</h4>
+        <p>Digital currencies like Bitcoin or Ethereum can rise dramatically and fall just as fast. Highly speculative, and not regulated like bank accounts. <strong>Don't invest money you can't afford to lose.</strong></p>
+      </div>
+      <div class="tool-card">
+        <div class="tool-badge risky">High Risk</div>
+        <div class="tool-icon">📉</div>
+        <h4>Individual Stock Picking</h4>
+        <p>Buying shares in a single company. Even professionals rarely beat the market consistently. High potential reward, but high potential loss. More appropriate once you have a solid financial foundation.</p>
+      </div>
+    </div>
+
+    <div class="sec-title">The golden rule</div>
+    <div class="prose">
+      <p>Before chasing returns on any investment, make sure your <strong>financial foundation</strong> is solid: you have a budget, an emergency fund, and you're saving consistently. Higher-risk tools only make sense on top of that base, not instead of it.</p>
+      <p>If something sounds too good to be true (guaranteed 100% returns, no risk), it almost certainly is. Skepticism is a financial superpower.</p>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="panel" id="panel-quiz">
+  <div class="page-head">
+    <span class="tag">Knowledge Check</span>
+    <h2>Quiz</h2>
+    <p>Seven scenario-based questions to test what you've learned. You'll get instant feedback and an explanation for every answer.</p>
+  </div>
+  <div class="content">
+    <div class="quiz-intro" role="note" aria-label="Quiz introduction">
+      <div class="qi-icon" aria-hidden="true">🧠</div>
+      <h3>Ready to think like a financially savvy person?</h3>
+      <p>Each question puts you in a real situation (the kind you'll actually face). There's no timer and no penalty for getting something wrong. Read the feedback carefully; that's where the real learning happens.</p>
+    </div>
+    <div class="qwrap">
+      <div class="qprog-outer"><div class="qprog-inner" id="qprog" style="width:0%"></div></div>
+      <div id="qcards"></div>
+      <div class="qresult" id="qresult">
+        <div class="bigscore" id="qscore"></div>
+        <div class="scorelabel">correct answers</div>
+        <p id="qmsg"></p>
+        <button class="btn-restart" onclick="restartQuiz()">↺ Try Again</button>
+      </div>
+    </div><!-- end qwrap -->
+  </div>
+</div>
+
+<footer>
+  <p>Financial Foundations for Beginners · Sai Bannur · 2026</p>
+  <p style="margin-top:6px;">
+    <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" aria-label="Creative Commons Attribution 4.0 International License">
+      <img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC BY 4.0 license badge" style="vertical-align:middle;margin-right:6px;border-radius:3px;">
+    </a>
+    This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 International (CC BY 4.0)</a> license.
+    <br>You are free to share and adapt this material for any purpose, provided you give appropriate credit.
+  </p>
+  <p style="margin-top:6px;">For educational purposes only (not personal financial advice)</p>
+</footer>
+
+<script>
+// ── NAV ──
+function go(id) {
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.toggle('active', b.dataset.p === id));
+  document.querySelectorAll('.mobile-menu button').forEach(b => b.classList.toggle('active', b.dataset.pm === id));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + id));
+  document.getElementById('mmenu').classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+document.querySelectorAll('.nav-links button').forEach(b => b.addEventListener('click', () => go(b.dataset.p)));
+document.querySelectorAll('.mobile-menu button').forEach(b => b.addEventListener('click', () => go(b.dataset.pm)));
+document.getElementById('hbg').addEventListener('click', () => document.getElementById('mmenu').classList.toggle('open'));
+
+// ── BUDGET ──
+function syncB() {
+  const n = +document.getElementById('s-needs').value;
+  const w = +document.getElementById('s-wants').value;
+  const s = +document.getElementById('s-savings').value;
+  document.getElementById('p-needs').textContent = n + '%';
+  document.getElementById('p-wants').textContent = w + '%';
+  document.getElementById('p-savings').textContent = s + '%';
+  const total = n + w + s, warn = document.getElementById('b-warn');
+  warn.style.display = total !== 100 ? 'block' : 'none';
+  warn.textContent = `⚠️ Total is ${total}% — adjust sliders to reach 100%.`;
+  updateBudget();
+}
+function updateBudget() {
+  const inc = +document.getElementById('b-income').value || 0;
+  const n = +document.getElementById('s-needs').value;
+  const w = +document.getElementById('s-wants').value;
+  const s = +document.getElementById('s-savings').value;
+  const fmt = v => '$' + v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  document.getElementById('r-needs').textContent = fmt(inc * n / 100);
+  document.getElementById('r-wants').textContent = fmt(inc * w / 100);
+  document.getElementById('r-savings').textContent = fmt(inc * s / 100);
+  document.getElementById('rp-needs').textContent = n + '%';
+  document.getElementById('rp-wants').textContent = w + '%';
+  document.getElementById('rp-savings').textContent = s + '%';
+}
+updateBudget();
+
+// ── COMPOUND INTEREST ──
+function calcCI(P, m, r, n, t) {
+  const rn = r / n, nt = n * t;
+  let A = P * Math.pow(1 + rn, nt);
+  if (m > 0 && r > 0) { const mr = r / 12, mo = t * 12; A += m * ((Math.pow(1 + mr, mo) - 1) / mr); }
+  else A += m * t * 12;
+  return A;
+}
+function updateCI() {
+  const P = +document.getElementById('ci-p').value || 0;
+  const m = +document.getElementById('ci-m').value || 0;
+  const r = (+document.getElementById('ci-r').value || 0) / 100;
+  const t = +document.getElementById('ci-t').value || 1;
+  const n = +document.getElementById('ci-n').value || 12;
+  const dep = P + m * 12 * t, fin = calcCI(P, m, r, n, t), int = Math.max(0, fin - dep);
+  const fmt = v => '$' + Math.round(v).toLocaleString();
+  document.getElementById('ci-dep').textContent = fmt(dep);
+  document.getElementById('ci-int').textContent = fmt(int);
+  document.getElementById('ci-fin').textContent = fmt(fin);
+  const chart = document.getElementById('ci-chart'); chart.innerHTML = '';
+  const step = Math.max(1, Math.floor(t / 8)), pts = [];
+  for (let y = step; y <= t; y += step) pts.push(y);
+  if (pts[pts.length - 1] !== t) pts.push(t);
+  pts.forEach(y => {
+    const tot = calcCI(P, m, r, n, y), d2 = P + m * 12 * y, i2 = Math.max(0, tot - d2);
+    const dh = Math.round((d2 / fin) * 100), ih = Math.round((i2 / fin) * 100);
+    const col = document.createElement('div'); col.className = 'bcol';
+    col.innerHTML = `<div class="b-i" style="height:${ih}px"></div><div class="b-p" style="height:${dh}px"></div><span class="b-yr">Yr ${y}</span>`;
+    chart.appendChild(col);
+  });
+}
+updateCI();
+
+// ── SAVINGS GOAL ──
+function updateGoal() {
+  const name = document.getElementById('g-name').value.trim() || 'Your Goal';
+  const target = +document.getElementById('g-target').value || 0;
+  const saved = +document.getElementById('g-saved').value || 0;
+  const months = +document.getElementById('g-months').value || 1;
+  const remaining = Math.max(0, target - saved), perMonth = remaining / months;
+  const pct = target > 0 ? Math.min(100, (saved / target) * 100) : 0;
+  const fmt = v => '$' + v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  document.getElementById('g-main').textContent = `"${name}" — ${fmt(target)} in ${months} month${months !== 1 ? 's' : ''}`;
+  document.getElementById('g-detail').textContent = `Save ${fmt(perMonth)}/month · ${fmt(saved)} saved so far · ${fmt(remaining)} to go.`;
+  document.getElementById('g-prog-label').textContent = `Progress: ${Math.round(pct)}%`;
+  document.getElementById('g-prog').style.width = pct + '%';
+}
+updateGoal();
+
+// ── DRAG & DROP (Needs vs Wants) ──
+const DND_ITEMS = [
+  { label: 'Bus pass', cat: 'needs' },
+  { label: 'Streaming subscription', cat: 'wants' },
+  { label: 'Groceries', cat: 'needs' },
+  { label: 'New video game', cat: 'wants' },
+  { label: 'Phone plan', cat: 'needs' },
+  { label: 'Brand-name sneakers', cat: 'wants' },
+  { label: 'Electricity bill', cat: 'needs' },
+  { label: 'Concert ticket', cat: 'wants' },
+  { label: 'Rent', cat: 'needs' },
+  { label: 'Takeout coffee', cat: 'wants' },
+];
+
+let draggedChip = null;
+
+function buildChip(item) {
+  const chip = document.createElement('div');
+  chip.className = 'dnd-chip';
+  chip.textContent = item.label;
+  chip.dataset.cat = item.cat;
+  chip.dataset.placed = 'pool';
+  chip.draggable = true;
+  chip.addEventListener('dragstart', e => {
+    draggedChip = chip;
+    setTimeout(() => chip.classList.add('dragging'), 0);
+  });
+  chip.addEventListener('dragend', () => {
+    chip.classList.remove('dragging');
+    draggedChip = null;
+  });
+  return chip;
+}
+
+function initDnd() {
+  const pool = document.getElementById('dnd-pool');
+  pool.innerHTML = '';
+  document.getElementById('pool-needs').innerHTML = '';
+  document.getElementById('pool-wants').innerHTML = '';
+  document.getElementById('dnd-fb').innerHTML = '';
+  // shuffle
+  const shuffled = [...DND_ITEMS].sort(() => Math.random() - 0.5);
+  shuffled.forEach(item => pool.appendChild(buildChip(item)));
+
+  // pool zone
+  pool.addEventListener('dragover', e => e.preventDefault());
+  pool.addEventListener('drop', e => {
+    e.preventDefault();
+    if (draggedChip) { pool.appendChild(draggedChip); draggedChip.dataset.placed = 'pool'; }
+  });
+}
+
+function dzOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dzLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function dzDrop(e, zone) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (draggedChip) {
+    document.getElementById('pool-' + zone).appendChild(draggedChip);
+    draggedChip.dataset.placed = zone;
+  }
+}
+
+function checkDnd() {
+  let correct = 0, total = DND_ITEMS.length;
+  document.querySelectorAll('.dnd-chip').forEach(chip => {
+    chip.classList.remove('correct', 'incorrect');
+    const placed = chip.dataset.placed;
+    if (placed === 'pool') return;
+    if (placed === chip.dataset.cat) { chip.classList.add('correct'); correct++; }
+    else chip.classList.add('incorrect');
+  });
+  const fb = document.getElementById('dnd-fb');
+  const placed = document.querySelectorAll('.dnd-chip:not([data-placed="pool"])').length;
+  if (placed < total) {
+    fb.innerHTML = `<span style="color:var(--amber)">⚠️ Sort all ${total} items first!</span>`;
+  } else {
+    fb.innerHTML = correct === total
+      ? `<span style="color:var(--green)">✅ Perfect! ${correct}/${total} correct. You've got a great eye for needs vs wants.</span>`
+      : `<span style="color:#c04040">You got ${correct}/${total} correct — review the highlighted ones and try again.</span>`;
+  }
+}
+
+function resetDnd() { initDnd(); buildSelectFallback(); }
+initDnd();
+
+// ── DND KEYBOARD FALLBACK ──
+function buildSelectFallback() {
+  const wrap = document.getElementById('dnd-selects');
+  wrap.innerHTML = '';
+  DND_ITEMS.forEach((item, i) => {
+    const row = document.createElement('div');
+    row.className = 'dnd-select-row';
+    row.innerHTML = `
+      <label for="sel-${i}">${item.label}</label>
+      <select id="sel-${i}" data-cat="${item.cat}" aria-label="Category for ${item.label}">
+        <option value="">-- choose --</option>
+        <option value="needs">✅ Need</option>
+        <option value="wants">🎮 Want</option>
+      </select>`;
+    wrap.appendChild(row);
+  });
+}
+buildSelectFallback();
+
+function checkDndSelect() {
+  let correct = 0;
+  DND_ITEMS.forEach((item, i) => {
+    const sel = document.getElementById('sel-' + i);
+    if (sel.value === item.cat) correct++;
+  });
+  const fb = document.getElementById('dnd-fb');
+  const total = DND_ITEMS.length;
+  const allAnswered = DND_ITEMS.every((_, i) => document.getElementById('sel-' + i).value !== '');
+  if (!allAnswered) {
+    fb.innerHTML = `<span style="color:var(--amber)">⚠️ Please categorise all ${total} items first!</span>`;
+    return;
+  }
+  fb.innerHTML = correct === total
+    ? `<span style="color:var(--green)">✅ Perfect! ${correct}/${total} correct.</span>`
+    : `<span style="color:#c04040">You got ${correct}/${total} correct — check your answers and try again.</span>`;
+}
+
+// ── QUIZ (scenario-based) ──
+const QS = [
+  {
+    scenario: "Alex just got his first paycheck from his part-time job, $400 for the month. He's excited and tempted to spend it all on a new gaming setup.",
+    q: "Using the 50/30/20 rule, how much should Alex set aside for savings?",
+    opts: ["$40", "$80", "$120", "$200"],
+    ans: 1,
+    fb: "20% of $400 = $80. Applied consistently, that's $960 saved over a year — just from one part-time job."
+  },
+  {
+    scenario: "Priya wants to understand how her savings account works. The bank says it pays 'compound interest.'",
+    q: "What does compound interest mean for Priya's savings?",
+    opts: ["She earns interest only on her original deposit", "A monthly banking fee", "She earns interest on her original deposit AND on previously earned interest", "A fixed-payment loan"],
+    ans: 2,
+    fb: "Compound interest earns on both your original amount AND on previously earned interest — creating a snowball effect over time."
+  },
+  {
+    scenario: "Emma saves $50/month starting at age 16. Her friend Jake starts the exact same habit at age 26. Both earn the same interest rate and stop contributing at 65.",
+    q: "Who ends up with more money, and why?",
+    opts: ["Jake — he's more disciplined by starting later", "Emma — she had more time for compound growth", "They end up equal since they saved the same amount per month", "Depends entirely on the interest rate"],
+    ans: 1,
+    fb: "Emma ends up with roughly twice as much. An extra decade of compound growth makes a dramatic difference — time is the most powerful ingredient."
+  },
+  {
+    scenario: "Jordan earns $600/month from a part-time job. She's trying to sort her expenses before building a budget.",
+    q: "Which of the following is a 'need' in Jordan's budget?",
+    opts: ["The latest video game", "A concert ticket", "Bus pass to get to work", "Brand-name sneakers"],
+    ans: 2,
+    fb: "Needs are essentials — transport to work qualifies. Wants are valuable but optional and come after needs and savings are funded."
+  },
+  {
+    scenario: "Marcus wants a $600 pair of headphones. He already has $150 saved, and wants to reach his goal in 6 months without touching his emergency fund.",
+    q: "How much does Marcus need to save per month to hit his goal?",
+    opts: ["$60", "$75", "$100", "$150"],
+    ans: 1,
+    fb: "($600 − $150) ÷ 6 = $75/month. This is the SMART goals approach — specific, measurable, and time-bound."
+  },
+  {
+    scenario: "Lily just started her first job. A classmate tells her she should put all her savings into Bitcoin because it 'made someone rich overnight.'",
+    q: "What's the most financially responsible thing for Lily to do first?",
+    opts: ["Put everything in Bitcoin — high risk, high reward", "Open a high-interest savings account and build an emergency fund first", "Spend it all now and invest later when she earns more", "Only invest in brand-name stocks she recognizes"],
+    ans: 1,
+    fb: "Build your foundation first: emergency fund, budget, consistent savings. Higher-risk tools like crypto make sense only on top of that base — not instead of it."
+  },
+  {
+    scenario: "Sam gets an unexpected $200 bill for a bike repair. Without an emergency fund, he'll have to skip saving this month and borrow from a friend.",
+    q: "Why is building an emergency fund a priority before other savings goals?",
+    opts: ["Emergency funds earn the highest interest rates", "Banks require it to open an account", "It protects you from unexpected costs without going into debt or derailing your goals", "They're tax-deductible"],
+    ans: 2,
+    fb: "An emergency fund is your safety net. Without one, unexpected expenses — like Sam's bike bill — force you into debt and undo months of progress."
+  }
+];
+
+let curQ = 0, score = 0, answered = false;
+
+function renderQ() {
+  const cards = document.getElementById('qcards'); cards.innerHTML = '';
+  if (curQ >= QS.length) { showResult(); return; }
+  const q = QS[curQ];
+  document.getElementById('qprog').style.width = ((curQ / QS.length) * 100) + '%';
+  const card = document.createElement('div'); card.className = 'qcard';
+  const scenarioHtml = q.scenario ? `<div class="qscenario">📖 ${q.scenario}</div>` : '';
+  card.innerHTML = `
+    <div class="qnum">Question ${curQ + 1} of ${QS.length}</div>
+    ${scenarioHtml}
+    <div class="qtext">${q.q}</div>
+    <div class="qopts">${q.opts.map((o, i) => `<button class="qopt" onclick="answerQ(${i})">${o}</button>`).join('')}</div>
+    <div class="qfb" id="qfb"></div>
+    <button class="qnext" id="qnext" onclick="nextQ()">${curQ + 1 < QS.length ? 'Next Question →' : 'See Results →'}</button>
+  `;
+  cards.appendChild(card); answered = false;
+}
+
+function answerQ(idx) {
+  if (answered) return; answered = true;
+  const q = QS[curQ];
+  document.querySelectorAll('.qopt').forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.ans) b.classList.add('correct');
+    else if (i === idx && idx !== q.ans) b.classList.add('incorrect');
+  });
+  const fb = document.getElementById('qfb');
+  if (idx === q.ans) { score++; fb.className = 'qfb correct'; fb.textContent = '✅ ' + q.fb; }
+  else { fb.className = 'qfb incorrect'; fb.textContent = '❌ Not quite. ' + q.fb; }
+  document.getElementById('qnext').style.display = 'inline-block';
+}
+
+function nextQ() { curQ++; renderQ(); }
+
+function showResult() {
+  document.getElementById('qcards').style.display = 'none';
+  document.getElementById('qresult').style.display = 'block';
+  document.getElementById('qprog').style.width = '100%';
+  document.getElementById('qscore').textContent = `${score}/${QS.length}`;
+  const pct = Math.round((score / QS.length) * 100);
+  document.getElementById('qmsg').textContent =
+    pct === 100 ? "Perfect! You've nailed every scenario — you're thinking like a financially savvy person." :
+    pct >= 70  ? "Great work! You have a solid grasp of the fundamentals. Review any questions you missed and try again." :
+    "Keep going — revisit the modules and work through the scenarios again. Every attempt builds understanding.";
+}
+
+function restartQuiz() {
+  curQ = 0; score = 0; answered = false;
+  document.getElementById('qcards').style.display = 'block';
+  document.getElementById('qresult').style.display = 'none';
+  renderQ();
+}
+renderQ();
+</script>
+</body>
+</html>
